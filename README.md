@@ -13,20 +13,29 @@ Mac で再生されている音声（Google Meet、Zoom、ブラウザなど）�
 
 ## インストール
 
-[Releases](https://github.com/sters/mac-transcribe-anything/releases) から `transcribe-<version>-darwin-arm64.tar.gz` を取得して展開する。バイナリは公証（notarization）していないので、ブラウザで取得した場合は隔離属性を外す。
+[mise](https://mise.jdx.dev/) の `github:` バックエンドで入れる。
+
+```sh
+mise use -g github:sters/mac-transcribe-anything
+```
+
+リポジトリが private のあいだは GitHub のトークンが要る。`GITHUB_TOKEN` か `MISE_GITHUB_TOKEN` に、このリポジトリを読めるトークンを設定する（例: `export GITHUB_TOKEN=$(gh auth token)`）。設定がないと GitHub API が 404 を返して失敗する。
+
+手動で入れる場合は [Releases](https://github.com/sters/mac-transcribe-anything/releases) から `transcribe-<version>-darwin-arm64.tar.gz` を取得して展開する。バイナリは公証（notarization）していないので、ブラウザで取得した場合は隔離属性を外す。
 
 ```sh
 tar -xzf transcribe-*-darwin-arm64.tar.gz
 xattr -d com.apple.quarantine transcribe
 ```
 
+ソースからビルドする場合は `swift build -c release` で `.build/release/transcribe` ができる。
+
 ## 使い方
 
 ```sh
-swift build -c release
-.build/release/transcribe                          # すべてのアプリの音声とマイク
-.build/release/transcribe --app us.zoom.xos        # 指定したアプリの音声だけ（複数指定可）
-.build/release/transcribe --output meeting.md      # 出力ファイルを指定
+transcribe                          # すべてのアプリの音声とマイク
+transcribe --app us.zoom.xos        # 指定したアプリの音声だけ（複数指定可）
+transcribe --output meeting.md      # 出力ファイルを指定
 ```
 
 Ctrl-C で終了する。
