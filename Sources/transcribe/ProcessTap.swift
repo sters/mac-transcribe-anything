@@ -64,7 +64,7 @@ final class ProcessTap {
                     [
                         kAudioSubTapUIDKey: description.uuid.uuidString,
                         kAudioSubTapDriftCompensationKey: true,
-                    ],
+                    ]
                 ],
             ]
             try check(AudioHardwareCreateAggregateDevice(aggregate as CFDictionary, &aggregateID), "AudioHardwareCreateAggregateDevice")
@@ -96,10 +96,11 @@ final class ProcessTap {
     /// `handler` runs on the I/O queue with a buffer that is only valid for the duration of the call.
     func start(_ handler: @escaping (AVAudioPCMBuffer) -> Void) throws {
         let format = self.format
-        try check(AudioDeviceCreateIOProcIDWithBlock(&ioProcID, aggregateID, queue) { _, input, _, _, _ in
-            guard let buffer = AVAudioPCMBuffer(pcmFormat: format, bufferListNoCopy: input, deallocator: nil) else { return }
-            handler(buffer)
-        }, "AudioDeviceCreateIOProcIDWithBlock")
+        try check(
+            AudioDeviceCreateIOProcIDWithBlock(&ioProcID, aggregateID, queue) { _, input, _, _, _ in
+                guard let buffer = AVAudioPCMBuffer(pcmFormat: format, bufferListNoCopy: input, deallocator: nil) else { return }
+                handler(buffer)
+            }, "AudioDeviceCreateIOProcIDWithBlock")
         try check(AudioDeviceStart(aggregateID, ioProcID), "AudioDeviceStart")
     }
 

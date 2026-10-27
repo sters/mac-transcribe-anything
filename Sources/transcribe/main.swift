@@ -18,10 +18,16 @@ var arguments = CommandLine.arguments.dropFirst()
 while let argument = arguments.popFirst() {
     switch argument {
     case "--app":
-        guard let value = arguments.popFirst() else { log(usage); exit(2) }
+        guard let value = arguments.popFirst() else {
+            log(usage)
+            exit(2)
+        }
         apps.append(value)
     case "--output":
-        guard let value = arguments.popFirst() else { log(usage); exit(2) }
+        guard let value = arguments.popFirst() else {
+            log(usage)
+            exit(2)
+        }
         outputPath = value
     case "-h", "--help":
         print(usage)

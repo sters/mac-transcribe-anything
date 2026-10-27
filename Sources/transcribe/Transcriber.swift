@@ -35,7 +35,8 @@ final class Transcriber: @unchecked Sendable {
         }
         let module = SpeechTranscriber(locale: supported, preset: .transcription)
         if await AssetInventory.status(forModules: [module]) < .installed,
-           let request = try await AssetInventory.assetInstallationRequest(supporting: [module]) {
+            let request = try await AssetInventory.assetInstallationRequest(supporting: [module])
+        {
             log("downloading speech model for \(supported.identifier)...")
             try await request.downloadAndInstall()
         }

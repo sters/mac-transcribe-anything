@@ -16,9 +16,9 @@ let package = Package(
                     "-Xlinker", "__TEXT",
                     "-Xlinker", "__info_plist",
                     "-Xlinker", "Sources/transcribe/Info.plist",
-                ]),
+                ])
             ]
-        ),
+        )
     ],
     swiftLanguageModes: [.v5]
 )
