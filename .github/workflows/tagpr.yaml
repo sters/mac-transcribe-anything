@@ -1,0 +1,72 @@
+name: tagpr
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tagpr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      tagpr-tag: ${{ steps.run-tagpr.outputs.tag }}
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Wait for GitHub API to be ready
+        run: sleep 10
+
+      - id: run-tagpr
+        name: Run tagpr
+        uses: Songmu/tagpr@v1
+
+  release:
+    needs: tagpr
+    if: needs.tagpr.outputs.tagpr-tag != ''
+    runs-on: macos-26
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      TAG: ${{ needs.tagpr.outputs.tagpr-tag }}
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v7
+
+      - name: Build
+        run: swift build -c release --arch arm64
+
+      - name: Package
+        run: |
+          mkdir dist
+          tar -czf "dist/transcribe-${TAG}-darwin-arm64.tar.gz" -C "$(swift build -c release --arch arm64 --show-bin-path)" transcribe
+          (cd dist && shasum -a 256 *.tar.gz > checksums.txt)
+
+      - name: Upload to the draft release
+        run: gh release upload "$TAG" dist/* --repo ${{ github.repository }}
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-checksums: ./dist/checksums.txt
+
+  publish:
+    needs: [tagpr, release]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Publish release
+        run: |
+          gh api /repos/${{ github.repository }}/releases/generate-notes -f tag_name=${{ needs.tagpr.outputs.tagpr-tag }} --jq .body | gh release edit ${{ needs.tagpr.outputs.tagpr-tag }} --repo ${{ github.repository }} --draft=false --latest --notes-file=-

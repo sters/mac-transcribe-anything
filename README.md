@@ -11,6 +11,15 @@ Mac で再生されている音声（Google Meet、Zoom、ブラウザなど）�
 - macOS 26 以降、Apple シリコン
 - ヘッドホン推奨。エコーキャンセルは使っていないので、スピーカーの音がマイクに回り込むと `自分` として二重に書き起こされる
 
+## インストール
+
+[Releases](https://github.com/sters/mac-transcribe-anything/releases) から `transcribe-<version>-darwin-arm64.tar.gz` を取得して展開する。バイナリは公証（notarization）していないので、ブラウザで取得した場合は隔離属性を外す。
+
+```sh
+tar -xzf transcribe-*-darwin-arm64.tar.gz
+xattr -d com.apple.quarantine transcribe
+```
+
 ## 使い方
 
 ```sh

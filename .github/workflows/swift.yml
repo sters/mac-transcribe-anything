@@ -1,0 +1,16 @@
+name: Swift
+on:
+  push:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    name: Build
+    runs-on: macos-26
+    timeout-minutes: 10
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v7
+
+    - run: swift build -c release
