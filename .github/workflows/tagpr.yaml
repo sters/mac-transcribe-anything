@@ -52,9 +52,11 @@ jobs:
           (cd dist && shasum -a 256 *.tar.gz > checksums.txt)
 
       - name: Upload to the draft release
-        run: gh release upload "$TAG" dist/* --repo ${{ github.repository }}
+        run: gh release upload "$TAG" dist/* --clobber --repo ${{ github.repository }}
 
+      # Attestations are unavailable for user-owned private repositories.
       - name: Attest build provenance
+        if: ${{ !github.event.repository.private }}
         uses: actions/attest-build-provenance@v4
         with:
           subject-checksums: ./dist/checksums.txt
