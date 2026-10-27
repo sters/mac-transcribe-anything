@@ -43,4 +43,17 @@ Ctrl-C で終了する。
 - 標準出力: `[HH:MM:SS] 相手: ...` / `[HH:MM:SS] 自分: ...`。端末では確定前の結果を最下行に表示し、確定すると置き換える
 - ファイル: 確定した結果だけを Markdown のリストで追記する。既定は `transcript-YYYYMMDD-HHMMSS.md`
 
-初回は「システムオーディオ録音」と「マイク」の権限を求められる。日本語の音声モデルが未インストールならダウンロードする。
+初回起動時に日本語の音声モデルが未インストールならダウンロードする。
+
+## 権限
+
+「システムオーディオ録音」と「マイク」の権限が要る。初回起動時に許可を求められる。
+
+権限は `transcribe` ではなく、起動したターミナルアプリ（Terminal、iTerm2、Ghostty など）に付く。システム設定の「プライバシーとセキュリティ」で、そのターミナルアプリを許可する。変更はターミナルアプリを再起動してから反映される。
+
+```sh
+open "x-apple.systempreferences:com.apple.preference.security?Privacy_Microphone"     # マイク
+open "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture"  # 画面とシステムオーディオの録音
+```
+
+マイクの権限がないと `microphone access was denied` で終了する。システムオーディオ録音の権限がないとエラーにはならず、無音を取り込むので `相手` の文字起こしが何も出ない。
