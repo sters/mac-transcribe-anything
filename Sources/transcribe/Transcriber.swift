@@ -17,7 +17,7 @@ final class Transcriber: @unchecked Sendable {
         transcriber = SpeechTranscriber(
             locale: locale,
             transcriptionOptions: [],
-            reportingOptions: [.volatileResults],
+            reportingOptions: [.volatileResults, .fastResults],
             attributeOptions: []
         )
         analyzer = SpeechAnalyzer(modules: [transcriber])
