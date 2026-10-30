@@ -48,7 +48,7 @@ jobs:
       - name: Package
         run: |
           mkdir dist
-          tar -czf "dist/transcribe-${TAG}-darwin-arm64.tar.gz" -C "$(swift build -c release --arch arm64 --show-bin-path)" transcribe
+          tar -czf "dist/transcribe-anything-${TAG}-darwin-arm64.tar.gz" -C "$(swift build -c release --arch arm64 --show-bin-path)" transcribe-anything
           (cd dist && shasum -a 256 *.tar.gz > checksums.txt)
 
       - name: Upload to the draft release

@@ -2,7 +2,7 @@ import Foundation
 import Speech
 
 let usage = """
-    usage: transcribe [--app <bundle-id>]... [--output <path>]
+    usage: transcribe-anything [--app <bundle-id>]... [--output <path>]
 
     Transcribes the audio this Mac plays (labelled 相手) and the microphone (labelled 自分)
     on device, in Japanese. Press Ctrl-C to stop.

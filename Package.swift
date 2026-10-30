@@ -6,7 +6,7 @@ let package = Package(
     platforms: [.macOS(.v26)],
     targets: [
         .executableTarget(
-            name: "transcribe",
+            name: "transcribe-anything",
             exclude: ["Info.plist"],
             linkerSettings: [
                 // A bare executable has no bundle, so the usage descriptions TCC requires are
@@ -15,7 +15,7 @@ let package = Package(
                     "-Xlinker", "-sectcreate",
                     "-Xlinker", "__TEXT",
                     "-Xlinker", "__info_plist",
-                    "-Xlinker", "Sources/transcribe/Info.plist",
+                    "-Xlinker", "Sources/transcribe-anything/Info.plist",
                 ])
             ]
         )

@@ -5,7 +5,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.github.sters.mac-transcribe-anything</string>
 	<key>CFBundleName</key>
-	<string>transcribe</string>
+	<string>transcribe-anything</string>
 	<key>NSAudioCaptureUsageDescription</key>
 	<string>Mac で再生されている音声を端末内で文字起こしするために使います。</string>
 	<key>NSMicrophoneUsageDescription</key>
